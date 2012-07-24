@@ -12,9 +12,9 @@ Requirements
 Setup
 -----
 
-1) In Visual Studio 2010, add a reference to System.ServiceModel.  In 2008, add a reference to System.ServiceModel.Web.
-2) Set the `alertFeed` key in the Web.config to whatever feed location you prefer.  You can find a list at [http://alerts.weather.gov/](http://alerts.weather.gov/).  Since your area might not be under an alert while you work on this, I've also provided an example alert XML file.
-3) Compile and go.
+1. In Visual Studio 2010, add a reference to System.ServiceModel.  In 2008, add a reference to System.ServiceModel.Web.
+2. Set the `alertFeed` key in the Web.config to whatever feed location you prefer.  You can find a list at [http://alerts.weather.gov/](http://alerts.weather.gov/).  Since your area might not be under an alert while you work on this, I've also provided an example alert XML file.
+3. Compile and go.
 
 Credit Is Due
 -------------
