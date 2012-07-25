@@ -16,6 +16,11 @@ Setup
 2. Set the `alertFeed` key in the Web.config to whatever feed location you prefer.  You can find a list at [http://alerts.weather.gov/](http://alerts.weather.gov/).  Since your area might not be under an alert while you work on this, I've also provided an example alert XML file.
 3. Compile and go.
 
+The Future
+----------
+
+Right now, the application decides whether or not there's an alert based on text in an element.  I realize that the NWS may not always word things the same way, so my next goal is to find a way to read through those funny namespaces with `SyndicationFeed` or to go back to using `XDocument`.  Then I can test for the existence of an element that is only there in the event of an actual alert.
+
 Credit Is Due
 -------------
 
