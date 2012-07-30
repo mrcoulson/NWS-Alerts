@@ -29,11 +29,12 @@ namespace NWSAlert4
                 XNamespace cap = "urn:oasis:names:tc:emergency:cap:1.1";
                 XNamespace ha = "http://www.alerting.net/namespace/index_1.0";
 
-                // 
+                // If there's no event...
                 if (xmlDoc.Descendants(cap + "event").Count() == 0)
                 {
                     litOut.Text = "No alerts currently.";
                 }
+                // ...then there is an event.
                 else
                 {
                     // LINQ work.
