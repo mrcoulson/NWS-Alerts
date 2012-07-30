@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Xml;
 using System.Xml.Linq;
 using System.ServiceModel.Syndication;
@@ -8,7 +9,8 @@ namespace NWSAlert4
 {
     public partial class Default : System.Web.UI.Page
     {
-        string strWarningFeed = ConfigurationManager.AppSettings["alertFeed"]; // Warning feed source.
+        // Warning feed source.
+        string strWarningFeed = ConfigurationManager.AppSettings["alertFeed"]; 
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -19,31 +21,41 @@ namespace NWSAlert4
         {
             try
             {
-                // Create an instance of XmlReader with the warning feed and then load it into a SyndicationFeed.
-                XmlReader reader = XmlReader.Create(strWarningFeed);
-                SyndicationFeed feed = SyndicationFeed.Load(reader);
+                // Connect an instance of XDocument to alert.
+                XDocument xmlDoc = XDocument.Load(strWarningFeed);
 
-                // Read through the XML, pull out the items we need depending on whether or not there is a warning.
-                foreach (var str in feed.Items)
+                // Handle those non-standard namespaces.
+                XNamespace ns = "http://www.w3.org/2005/Atom";
+                XNamespace cap = "urn:oasis:names:tc:emergency:cap:1.1";
+                XNamespace ha = "http://www.alerting.net/namespace/index_1.0";
+
+                // 
+                if (xmlDoc.Descendants(cap + "event").Count() == 0)
                 {
-                    if (str.Title.Text.Contains("no active"))
+                    litOut.Text = "No alerts currently.";
+                }
+                else
+                {
+                    // LINQ work.
+                    // Stick ":::" in the middle for splitting the results into an array later.
+                    var q = from c in xmlDoc.Descendants(ns + "entry")
+                            select (string)c.Element(cap + "event") + ":::" + (string)c.Element(ns + "id");
+
+                    foreach (string str in q)
                     {
-                        weatherWarning.Visible = false;
-                    }
-                    else
-                    {
-                        string strTitle = str.Title.Text;
-                        string strId = str.Id.ToString();
-                        strTitle = strTitle.Substring(0, strTitle.LastIndexOf("issued"));
-                        litOut.Text += String.Format("<p class=\"warningText\">{0}</p><p class=\"warningText\"><a href=\"{1}\">Read more.</a></p>", strTitle, strId);
+                        // Loop through the strings in q and add to the Literal. 
+                        string[] strSeparators = new string[] { ":::" };
+                        // Turn str into an array of strings split on ":::";
+                        string[] strResult = str.Split(strSeparators, StringSplitOptions.None);
+                        litOut.Text += String.Format("<h1>{0}</h1><p><a href=\"{1}\">Read more.</a></p>", strResult[0], strResult[1]);
                     }
                 }
             }
-            catch (Exception exNoWeather)
+            catch (Exception exBadWeather)
             {
-                // It didn't work.
-                litOut.Text = "<p>I can't seem to connect to the weather.</p><p>" + exNoWeather.ToString() + "</p>";
-            }    
+                // Can't get weather.
+                litOut.Text = exBadWeather.ToString();
+            }
         }
     }
 }

@@ -16,12 +16,12 @@ Setup
 2. Set the `alertFeed` key in the Web.config to whatever feed location you prefer.  You can find a list at [http://alerts.weather.gov/](http://alerts.weather.gov/).  Since your area might not be under an alert while you work on this, I've also provided an example alert XML file.
 3. Compile and go.
 
+Newest Changes
+--------------
+
+I went back to using `XDocument` instead of `SyndicationFeed` because I needed to easily read non-standard namespaces.  Now, I am testing for an alert by checking to see if `xmlDoc.Descendants(cap + "event").Count()` is 0.
+
 The Future
 ----------
 
-Right now, the application decides whether or not there's an alert based on text in an element.  I realize that the NWS may not always word things the same way, so my next goal is to find a way to read through those funny namespaces with `SyndicationFeed` or to go back to using `XDocument`.  Then I can test for the existence of an element that is only there in the event of an actual alert.
-
-Credit Is Due
--------------
-
-My friend Matt Potocnik showed me how to use `SyndicationFeed` instead of `XDocument` since this is an Atom feed.
+I am currently sticking some characters between the results of the query and then splitting those into an array later.  I'd really rather just grab results as an array with LINQ and not have to insert and then remove characters, but I haven't figured that out yet.
