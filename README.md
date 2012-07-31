@@ -3,6 +3,8 @@ NWS Alerts
 
 This application queries an XML file hosted by the National Weather Service for alerts.  If there is no alert, nothing is displayed.  If there is an alert, the application shows the title and a link to more information.  Unlike my [forecast application](https://github.com/mrcoulson/ASP.NET-National-Weather-Service-Parser) which copies forecast data locally, this one simply connects directly to the NWS feed.  I figured that fresh information is best with weather warnings.
 
+I also made a [short demo](http://www.co.frederick.va.us/dev/nwsalert4/nwsalert4/demo.aspx) of the final product for you to check out.
+
 Requirements
 ------------
 
